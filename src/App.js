@@ -1,31 +1,24 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
+import { Route, Link } from 'react-router-dom'
 
-import { simpleAction } from './actions/SimpleAction'
+import Home from './components/home'
+import Register from './components/register'
+import Login from './components/login'
 
-import './App.css'
+const App = () => (
+    <div>
+        <header>
+            <Link to="/">Home</Link>
+            <Link to="/register">Register</Link>
+            <Link to="/login">Login</Link>
+        </header>
+        
+        <main>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+        </main>
+    </div>
+)
 
-class App extends Component {
-    simpleAction = (e) => {
-        this.props.simpleAction()
-    }
-
-    render() {
-        return (
-            <div className="App">
-                <pre>
-                    {JSON.stringify(this.props)}
-                </pre>
-                Good Job Hunting
-                <button onClick={this.props.simpleAction}>Test Redux Action</button>
-            </div>
-        )
-    }
-}
-
-const mapStateToProps = state => ({
-    ...state
-})
-
-
-export default connect(mapStateToProps, { simpleAction })(App)
+export default App
