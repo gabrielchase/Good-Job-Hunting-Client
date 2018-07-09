@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 const { API_URL } = require('../config/config')
-console.log('API_URL: ', API_URL)
 
 export function getHeaders(jwt=false) {
     let headers = {

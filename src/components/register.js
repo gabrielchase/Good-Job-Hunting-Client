@@ -39,7 +39,6 @@ class RegisterUser extends Component {
         
         const { email, password } = this.state
         const res = await this.props.registerUser({ email, password})
-        console.log('res: ', res)
         
         if (res.success) {
             this.props.gotoLogin()
