@@ -35,11 +35,13 @@ export const registerUser = (user) => async dispatch => {
 export const loginUser = (user) => async dispatch => {
     const headers = getHeaders(false)
     const res = await axios.post(`${API_URL}/login`, user, headers)
-    localStorage.setItem('user_auth', res.data)
+    
+    localStorage.setItem('user_auth', JSON.stringify(res.data.data))
+    
     if (res.data.success) {
         await dispatch({
             type: 'LOGIN_SUCCESS',
-            payload: res.data
+            payload: res.data.data
         })
         return { success: true }
     } else {

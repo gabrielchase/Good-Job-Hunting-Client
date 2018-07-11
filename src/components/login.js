@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { push } from 'connected-react-router'
 
 import { loginUser } from '../actions/index'
 
@@ -12,6 +13,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     loginUser,
+    gotoDashboard: () => push('/dashboard')
 }, dispatch)
 
 class Login extends Component { 
@@ -44,8 +46,10 @@ class Login extends Component {
         const { email, password } = this.state
         const res = await this.props.loginUser({ email, password })
         
-        if (res.success) 
-            console.log('Login success')
+        if (res.success) {
+            console.log(this.props.auth)
+            this.props.gotoDashboard()
+        }
         else 
             this.setState({ error: this.props.auth.message })
         
@@ -53,7 +57,6 @@ class Login extends Component {
 
     render() {
         const { email, password, error } = this.state
-        if (this.props.auth) console.log('auth: ', this.props.auth)
         return (
             <form onSubmit={this.handleSubmit}>
                 <h1>Login</h1>
