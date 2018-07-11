@@ -1,24 +1,27 @@
-import React from 'react'
-import { Route, Link } from 'react-router-dom'
+import React, { Component} from 'react'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-import Home from './components/home'
-import Register from './components/register'
-import Login from './components/login'
 
-const App = () => (
-    <div>
-        <header>
-            <Link to="/">Home</Link>
-            <Link to="/register">Register</Link>
-            <Link to="/login">Login</Link>
-        </header>
-        
-        <main>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-        </main>
-    </div>
-)
+const mapStateToProps = (state) => {
+    return {
+        auth: state.auth
+    }
+}
 
-export default App
+class App extends Component {
+    render() {
+        return(
+            <div>
+                <header>
+                    <Link to="/">Home</Link>
+                    <Link to="/register">Register</Link>
+                    <Link to="/login">Login</Link>
+                </header>
+            </div>
+        )
+    }
+}
+
+export default connect(mapStateToProps, {})(App)
+
