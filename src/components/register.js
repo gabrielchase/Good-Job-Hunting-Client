@@ -38,21 +38,19 @@ class RegisterUser extends Component {
         e.preventDefault()
         
         const { email, password } = this.state
-        const res = await this.props.registerUser({ email, password})
+        const res = await this.props.registerUser({ email, password })
         
-        if (res.success) {
+        if (res.success) 
             this.props.gotoLogin()
-        }
-        else {
+        else 
             this.setState({ error: this.props.auth.message })
-        }
     }
 
     render() {
         const { email, password, error } = this.state
         return (
             <form onSubmit={this.handleSubmit}>
-                <h1>Sign Up</h1>
+                <h1>Register</h1>
                 <p>{error}</p>
                 <label htmlFor="email">Email</label>
                 <input 
