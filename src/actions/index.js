@@ -1,4 +1,5 @@
 import axios from 'axios'
+const _ = require('lodash')
 
 const { API_URL } = require('../config/config')
 
@@ -8,7 +9,8 @@ export function getHeaders(jwt=false) {
             'Content-Type' : 'application/json'
         }
     }
-    if (jwt) headers.headers['Authorization '] = `JWT ${localStorage.getItem('jwt')}`
+    const { token } = JSON.parse(localStorage.getItem('user_auth'))
+    if (jwt) headers.headers['Authorization'] = `Bearer ${token}`
     return headers
 }
 
@@ -47,6 +49,27 @@ export const loginUser = (user) => async dispatch => {
     } else {
         dispatch({
             type: 'LOGIN_FAIL',
+            payload: res.data
+        })
+        return { success: false }
+    }
+}
+
+export const fetchJobs = () => async dispatch => {
+    const headers = getHeaders(true)
+    const { _id } = JSON.parse(localStorage.getItem('user_auth'))
+    const res = await axios.get(`${API_URL}/user/${_id}/jobs`, headers)
+    const jobs = _.keyBy(res.data.data, '_id')
+
+    if (res.data.success) {
+        await dispatch({
+            type: 'GET_JOBS_SUCCESS',
+            payload: jobs
+        })
+        return { success: true }
+    } else {
+        dispatch({
+            type: 'GET_JOBS_FAIL',
             payload: res.data
         })
         return { success: false }
