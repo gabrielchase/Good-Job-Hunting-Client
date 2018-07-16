@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Button, Header, Image, Modal } from 'semantic-ui-react'
+import { Button, Checkbox,  Form, Modal, TextArea } from 'semantic-ui-react'
+import { DateInput } from 'semantic-ui-calendar-react'
 
 import { fetchJobs } from '../actions/index'
+import CountryDropdown from './country_dropdown'
 
 
 const mapStateToProps = (state) => {
@@ -18,21 +20,77 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch)
 
 class Dashboard extends Component {
+    constructor() {
+        super()
+
+        this.state = {
+            company: '',
+            position: '',
+            country: '',
+            city: '',
+            due_date: '',
+            priority: true,
+            notes: '',
+            error: false
+        }
+
+        this.handleChange = this.handleChange.bind(this)
+        // this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
     async componentWillMount() {
         await this.props.fetchJobs()
+    }
+
+    handleChange = (event, {name, value}) => {
+        if (this.state.hasOwnProperty(name)) {
+            this.setState({ [name]: value });
+        }
+    }
+
+    async handleSubmit(e) {
+        e.preventDefault()
     }
 
     newJobModal() {
         return (
             <Modal trigger={<Button>Show Modal</Button>}>
-                <Modal.Header>Select a Photo</Modal.Header>
-                <Modal.Content image>
-                <Image wrapped size='medium' src='/images/avatar/large/rachel.png' />
-                <Modal.Description>
-                    <Header>Default Profile Image</Header>
-                    <p>We've found the following gravatar image associated with your e-mail address.</p>
-                    <p>Is it okay to use this photo?</p>
-                </Modal.Description>
+                <Modal.Header>Add Job</Modal.Header>
+                <Modal.Content>
+                    <Form>
+                        <Form.Group widths='equal'>
+                            <Form.Input fluid label='Company' placeholder='Company' onChange={this.handleChange} />
+                            <Form.Input fluid label='Position' placeholder='Position' onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Group widths='equal'>
+                            <Form.Field>
+                                <label>Country</label>
+                                <CountryDropdown />
+                            </Form.Field>
+                            <Form.Input fluid label='City' placeholder='City' />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Input fluid label='Currency' placeholder='Currency' width={4} onChange={this.handleChange} />
+                            <Form.Input fluid label='Salary' placeholder='Salary' width={12} onChange={this.handleChange} />
+                        </Form.Group>
+                        <Form.Field>
+                            <label>Due Date</label>
+                            <DateInput 
+                                name="due_date"
+                                placeholder="Due Date" 
+                                value={this.state.due_date}
+                                onChange={this.handleChange} />
+                        </Form.Field>
+                        <Form.Group width='equal'>
+                            <label style={{paddingLeft: 8 + 'px', paddingRight: 10 + 'px'}}><strong>Priority</strong></label>
+                            <Checkbox />
+                        </Form.Group>
+                        <Form.Field>
+                            <label>Notes</label>
+                            <TextArea placeholder='Other job details' />
+                        </Form.Field>
+                        <Button type='submit'>Submit</Button>
+                    </Form>
                 </Modal.Content>
             </Modal>
         )
