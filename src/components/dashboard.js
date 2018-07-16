@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Button, Header, Image, Modal } from 'semantic-ui-react'
 
 import { fetchJobs } from '../actions/index'
+
 
 const mapStateToProps = (state) => {
     return {
@@ -20,6 +22,22 @@ class Dashboard extends Component {
         await this.props.fetchJobs()
     }
 
+    newJobModal() {
+        return (
+            <Modal trigger={<Button>Show Modal</Button>}>
+                <Modal.Header>Select a Photo</Modal.Header>
+                <Modal.Content image>
+                <Image wrapped size='medium' src='/images/avatar/large/rachel.png' />
+                <Modal.Description>
+                    <Header>Default Profile Image</Header>
+                    <p>We've found the following gravatar image associated with your e-mail address.</p>
+                    <p>Is it okay to use this photo?</p>
+                </Modal.Description>
+                </Modal.Content>
+            </Modal>
+        )
+    }
+
     renderJobs() {
         const { jobs } = this.props
         return Object.keys(jobs).map(
@@ -35,10 +53,11 @@ class Dashboard extends Component {
     }
 
     render() {
-        return(
+        return (
             <div>
                 <h1>Dashboard</h1>
                 {this.renderJobs()}
+                {this.newJobModal()}
             </div>
         )
     }

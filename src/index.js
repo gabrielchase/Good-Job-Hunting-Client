@@ -2,7 +2,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Switch, Route } from 'react-router'
-import { ConnectedRouter } from 'connected-react-router';
+import { ConnectedRouter } from 'connected-react-router'
 
 import store, { history } from './store'
 import './index.css'
@@ -15,6 +15,8 @@ import Register from './components/register'
 import Dashboard from './components/dashboard'
 import PrivateRoute from './components/private_route'
 
+import 'semantic-ui-css/semantic.min.css'
+
 render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
@@ -24,7 +26,8 @@ render(
                     <Route exact path="/" component={Home} />
                     <Route exact path="/register" component={Register} />
                     <Route exact path="/login" component={Login} />
-                    <PrivateRoute exact path="/dashboard"><Dashboard /></PrivateRoute>
+                    <Route exact path="/dashboard" component={Dashboard} />
+                    {/* <PrivateRoute exact path="/dashboard"><Dashboard /></PrivateRoute> */}
                 </Switch>
             </div>
         </ConnectedRouter>
